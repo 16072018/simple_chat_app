@@ -1,4 +1,4 @@
-// Manages the server and socket.io interactions
+// 서버와 socket.io 간의 상호작용
 const express = require("express");
 const http = require("http");
 const path = require("path");
@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app); // io requires raw http
 const io = socketio(server); // Setup socket.io's server
 
-// When we run the server our public file will also be ran
+// 서버 접속 시 사용할 파일들
 const publicDirectoryPath = path.join(__dirname, "./public");
 app.use(express.static(publicDirectoryPath));
 

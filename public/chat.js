@@ -1,30 +1,33 @@
-// Handles front-end and is imported into index.html
+// 프론트엔드
 const socket = io();
 
-// Get all of our elements
+// 필요한 모든 element들을 불러들이기
 const chat = document.querySelector("#chat");
 const form = document.querySelector("form");
 const name = form.name;
 const message = form.message;
 const send = form.send;
 
+// submit (메세지 전송) 이벤트 리스너
 form.addEventListener("submit", e => {
   e.preventDefault();
 
-  // Disable while the message is being sent.
+  // 메세지가 전송 중일 때는 비활성화 시킴.
   send.classList.remove("bg-purple-700");
   send.classList.add("cursor-not-allowed", "bg-purple-500");
 
+  // sendMessage라는 이벤트를 emit
   socket.emit("sendMessage", {
     name: name.value,
     message: message.value
   });
 
+  // message 창 초기화
   message.value = "";
   message.focus();
 });
 
-// Creating a new element for out message and appending it to the chat and re-enabling the send button.
+// 메세지 전송 시 새로운 element 형성하여 화면에 표시, 전송 버튼 재활성화
 socket.on("showMessage", message => {
   const newMessage = document.createElement("div");
   const user = document.createElement("h3");
@@ -47,7 +50,7 @@ socket.on("showMessage", message => {
   newMessage.appendChild(text);
   chat.appendChild(newMessage);
 
-  // Re-enable button after message is received
+  // 메세지 수신 시 버튼 재활성화
   send.classList.remove("cursor-not-allowed", "bg-purple-500");
   send.classList.add("bg-purple-700");
 });
